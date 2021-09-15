@@ -194,3 +194,6 @@ $RECYCLE.BIN/
 .DS_Store
 
 _NCrunch*
+
+Backend/appsettings.Development.json
+Backend/appsettings.json

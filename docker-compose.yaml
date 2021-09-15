@@ -5,17 +5,33 @@ services:
             context: ./Nginx
             dockerfile: Dockerfile
         ports: 
-            - 80:80
+            - "80:80"
         restart: always
     frontend:
         build:
             context: ./Frontend
             dockerfile: Dockerfile
         ports:
-            - 5000:80
+            - "5000:80"
     backend:
         build: 
             context: ./Backend
             dockerfile: Dockerfile
         ports:
-            - 3000:80
+            - "3000:80"
+    sqlserver:
+        image: "mcr.microsoft.com/mssql/server"
+        hostname: 'sqlserver'
+        environment:
+            ACCEPT_EULA: Y
+            SA_PASSWORD: "BigPassw0rd"
+        volumes:
+            - ./Database/data:/var/opt/mssql/data
+        ports:
+            - "1433:1433"
+        expose:
+            - 1433
+    redis:
+        image: redis
+        ports:
+            - "6379:6379"

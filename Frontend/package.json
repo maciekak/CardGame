@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --host 0.0.0.0 --poll 100",
+    "start": "ng serve",
     "build": "ng build",
     "build:ssr": "ng run AngularDncApp:server:dev",
     "test": "ng test",
@@ -26,6 +26,7 @@
     "bootstrap": "^4.3.1",
     "core-js": "^3.3.3",
     "jquery": "3.4.1",
+    "ng": "0.0.0",
     "oidc-client": "^1.9.1",
     "popper.js": "^1.16.0",
     "rxjs": "^6.5.3",
