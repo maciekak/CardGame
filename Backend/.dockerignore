@@ -1,0 +1,6 @@
+﻿bin/
+obj/
+build/
+.git/
+.vscode/
+.vs/
