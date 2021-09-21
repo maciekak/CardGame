@@ -1,4 +1,8 @@
+using System;
+using System.Linq;
+using System.Reflection;
 using Backend.DatabaseAccessLayer;
+using Backend.DatabaseAccessLayer.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -32,6 +36,8 @@ namespace Backend
             services.AddDbContext<UsersSqlServerContext>(options => options.UseSqlServer(Configuration.GetConnectionString("SqlConnection"))); 
             
             services.Add(ServiceDescriptor.Singleton<IDistributedCache, RedisCache>());
+
+            AddScopedRepositories(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,6 +58,52 @@ namespace Backend
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+        }
+
+        private void AddScopedRepositories(IServiceCollection services)
+        {
+            var result = Assembly.GetExecutingAssembly()
+                .GetTypes()
+                .Where(type => type.Name.Contains("Repository") && type.IsClass)
+                .All(type =>
+                {
+                    var typeInterface = type.GetInterfaces().FirstOrDefault(inter => inter.Name.Contains("Repository"));
+                    if (typeInterface is null)
+                    {
+                        return false;
+                    }
+
+                    services.AddScoped(typeInterface, type);
+                    return true;
+                });
+            
+            if (!result)
+            {
+                throw new Exception("Not all repositories were registered");
+            }
+        }
+
+        private void AddScopedManagers(IServiceCollection services)
+        {
+            var result = Assembly.GetExecutingAssembly()
+                .GetTypes()
+                .Where(type => type.Name.Contains("Manager") && type.IsClass)
+                .All(type =>
+                {
+                    var typeInterface = type.GetInterfaces().FirstOrDefault(inter => inter.Name.Contains("Manager"));
+                    if (typeInterface is null)
+                    {
+                        return false;
+                    }
+
+                    services.AddScoped(typeInterface, type);
+                    return true;
+                });
+            
+            if (!result)
+            {
+                throw new Exception("Not all managers were registered");
+            }
         }
     }
 }

@@ -10,7 +10,13 @@ namespace Backend.DatabaseAccessLayer
         {
             Database.EnsureCreated();
         }
+        
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+        }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<Player> Players { get; set; }
     }
 }
