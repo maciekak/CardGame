@@ -1,10 +1,9 @@
 ﻿using System;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Backend.DatabaseAccessLayer.Model;
 using Backend.DatabaseAccessLayer.Repositories;
 using Microsoft.Extensions.Caching.Distributed;
-using Newtonsoft.Json;
-using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Backend.Managers
 {
